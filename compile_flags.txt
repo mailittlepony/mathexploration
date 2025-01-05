@@ -1,0 +1,7 @@
+-Ilibs/glew/include
+-Ilibs/glfw/include
+-Ilibs/simpleecs/include
+-Ilibs/stb
+-Ilibs/glm
+-std=c++17
+-Isrc
