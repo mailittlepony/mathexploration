@@ -4,17 +4,10 @@
  * @created     : Saturday Dec 28, 2024 19:34:24 CET
  */
 
-#include "glm/ext/vector_float3.hpp"
-#include "glm/fwd.hpp"
-#define GL_SILENCE_DEPRECATION
-
 #include "Components.hpp"
 #include "Systems.hpp"
-#include "render/Shader.hpp"
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 struct Vertex
 {
@@ -59,15 +52,16 @@ void MeshSystem::upload(std::vector<Entity> entities, void *args)
     {
         Mesh *mesh = ECS::get_component<Mesh>(entity);
         Transform* t = ECS::get_component<Transform>(entity);
+        Texture *tex = ECS::get_component<Texture>(entity);
 
         glBindVertexArray(mesh->VAO);
 
         Vertex vertices[4] = 
         {
-            { .position={ t->x + 1, t->y + 1, 0 }, .uv={ 1, 1 } },
-            { .position={ t->x + 1, t->y + 0, 0 }, .uv={ 1, 0 } },
-            { .position={ t->x + 0, t->y + 0, 0 }, .uv={ 0, 0 } },
-            { .position={ t->x + 0, t->y + 1, 0 }, .uv={ 0, 1 } },
+            { .position={ t->x + 1, t->y + 1, 0 }, .uv=tex->uvmax },
+            { .position={ t->x + 1, t->y + 0, 0 }, .uv={ tex->uvmax.x, tex->uvmin.y } },
+            { .position={ t->x + 0, t->y + 0, 0 }, .uv=tex->uvmin },
+            { .position={ t->x + 0, t->y + 1, 0 }, .uv={ tex->uvmin.x, tex->uvmax.y } },
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
@@ -83,12 +77,8 @@ void MeshSystem::draw(std::vector<Entity> entities, void *args)
     for (Entity const &entity : entities)
     {
         Mesh *mesh = ECS::get_component<Mesh>(entity);
-        Transform *transform = ECS::get_component<Transform>(entity);
 
         glBindVertexArray(mesh->VAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ECS::get_component<Texture>(entity)->texture_id);
-
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 }

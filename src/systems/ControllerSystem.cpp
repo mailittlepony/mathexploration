@@ -26,7 +26,7 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
             controller->move_up = false;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) 
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) 
         {
             controller->move_down = true;
         } 
@@ -35,7 +35,7 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
             controller->move_down = false;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) 
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) 
         {
             controller->move_left = true;
         } 
@@ -52,13 +52,6 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
         {
             controller->move_right = false;
         }
-
-/*         // Debugging output */
-/*         std::cout << "Move Up: " << controller->move_up */
-/*                   << ", Move Down: " << controller->move_down */
-/*                   << ", Move Left: " << controller->move_left */
-/*                   << ", Move Right: " << controller->move_right */
-/*                   << std::endl; */
     }
 }
 
