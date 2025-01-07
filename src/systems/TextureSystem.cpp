@@ -6,13 +6,14 @@
 #include "Systems.hpp"
 #include "render/Shader.hpp"
 
+#define TILE_NB 83
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "stb_image.h"
 
 const std::string TextureSystem::path = "./src/render/textures/texture.png";
 GLuint TextureSystem::texture_id = 0;
-std::pair<glm::vec2, glm::vec2> TextureSystem::texture_uvs[80] = {  };
-int TextureSystem::tile_size = 64;
+std::pair<glm::vec2, glm::vec2> TextureSystem::texture_uvs[TILE_NB] = {  };
 int TextureSystem::tile_hor_count = 16;
 
 void TextureSystem::init(std::vector<Entity> entities, void *args)
@@ -44,7 +45,7 @@ void TextureSystem::init(std::vector<Entity> entities, void *args)
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
-    for (int i = 0; i < 80; ++i)
+    for (int i = 0; i < TILE_NB; ++i)
     {
         int x = i % tile_hor_count;
         int y = i / tile_hor_count;
@@ -76,11 +77,6 @@ TextureSystem::~TextureSystem()
 GLuint TextureSystem::get_texture_id()
 {
     return texture_id;
-}
-
-int TextureSystem::get_tile_size()
-{
-    return tile_size;
 }
 
 int TextureSystem::get_tile_hor_count()

@@ -53,9 +53,18 @@ struct Camera
     float smoothing_factor; 
 };
 
-struct Animation
-{
+enum class AnimationMode {
+    None,           
+    Always,         
+    OnInput         
+};
 
+struct Animation {
+    int current_frame;          
+    float frame_duration;       
+    float elapsed_time;         
+    std::vector<int> frames;    
+    AnimationMode mode;         
 };
 
 #endif 

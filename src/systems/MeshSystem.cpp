@@ -4,6 +4,7 @@
  * @created     : Saturday Dec 28, 2024 19:34:24 CET
  */
 
+#include "Components.hpp"
 #include "Systems.hpp"
 
 #include <glm/glm.hpp>
@@ -52,17 +53,24 @@ void MeshSystem::upload(std::vector<Entity> entities, void *args)
         Mesh *mesh = ECS::get_component<Mesh>(entity);
         Transform* t = ECS::get_component<Transform>(entity);
         Texture *tex = ECS::get_component<Texture>(entity);
+        Animation *animation = ECS::get_component<Animation>(entity);
 
-        int tile_size = TextureSystem::get_tile_size(); 
+        if (animation->mode == AnimationMode::Always || animation->mode == AnimationMode::OnInput)
+        {
+            int current_frame_id = animation->frames[animation->current_frame];
+
+            tex->uvmin = TextureSystem::texture_uvs[current_frame_id].first;
+            tex->uvmax = TextureSystem::texture_uvs[current_frame_id].second;
+        }
 
         glBindVertexArray(mesh->VAO);
 
         Vertex vertices[4] = 
         {
-            { .position={ t->x - tile_size/2.0 + t->scale.x, t->y -tile_size/2.0 + t->scale.y, 0 }, .uv=tex->uvmax },
-            { .position={ t->x - tile_size/2.0 + t->scale.x, t->y-tile_size/2.0 + 0, 0 }, .uv={ tex->uvmax.x, tex->uvmin.y } },
-            { .position={ t->x -tile_size/2.0+ 0, t->y -tile_size/2.0+ 0, 0 }, .uv=tex->uvmin },
-            { .position={ t->x - tile_size/2.0+ 0, t->y -tile_size/2.0+ t->scale.y, 0 }, .uv={ tex->uvmin.x, tex->uvmax.y } },
+            { .position={ t->x + t->scale.x, t->y  + t->scale.y, 0 }, .uv=tex->uvmax },
+            { .position={ t->x + t->scale.x, t->y + 0, 0 }, .uv={ tex->uvmax.x, tex->uvmin.y } },
+            { .position={ t->x + 0, t->y + 0, 0 }, .uv=tex->uvmin },
+            { .position={ t->x + 0, t->y + t->scale.y, 0 }, .uv={ tex->uvmin.x, tex->uvmax.y } },
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);

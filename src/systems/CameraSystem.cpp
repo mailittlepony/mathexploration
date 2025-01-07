@@ -30,7 +30,7 @@ void CameraSystem::init(std::vector<Entity> entities, void* args) {
     glUniformMatrix4fv(projection_loc, 1, GL_FALSE, &projection[0][0]);
 }
 
-void CameraSystem::update_camera(std::vector<Entity> entities, void* args) {
+void CameraSystem::update(std::vector<Entity> entities, void* args) {
     if (entities.empty()) return;
 
     Transform* transform = ECS::get_component<Transform>(entities[0]);

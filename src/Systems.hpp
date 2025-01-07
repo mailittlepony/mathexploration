@@ -29,28 +29,6 @@ class MeshSystem
     private:
 };
 
-
-class TextureSystem
-{
-    public:
-        TextureSystem () = delete;
-        ~TextureSystem();
-
-        static void init(std::vector<Entity> entities, void *args);
-        static GLuint get_texture_id();
-        static int get_tile_size();
-        static int get_tile_hor_count();
-
-    private:
-        static GLuint texture_id;
-        static const std::string path;
-        /* static std::unordered_map<std::string, std::pair<glm::vec2, glm::vec2>> texture_uv_map; */
-        static std::pair<glm::vec2, glm::vec2> texture_uvs[];
-        static int tile_size;
-        static int tile_hor_count;
-};
-
-
 class PhysicSystem
 {
     public:
@@ -80,7 +58,7 @@ class CameraSystem {
         ~CameraSystem();
 
         static void init(std::vector<Entity> entities, void* args);
-        static void update_camera(std::vector<Entity> entities, void* args);
+        static void update(std::vector<Entity> entities, void* args);
 
     private:
         static void create_projection_matrix(float screen_width, float screen_height, glm::mat4& proj_matrix);
@@ -88,15 +66,36 @@ class CameraSystem {
 
 };
 
-class AnimateSystem
+class AnimationSystem
 {
     public:
-        AnimateSystem() = delete;
-        ~AnimateSystem();
+        AnimationSystem() = delete;
+        ~AnimationSystem();
 
         static void animate(std::vector<Entity> entities, void *args);
 
     private:
+        static void update(Animation *animation, float delta_time);
+};
+
+class TextureSystem
+{
+    public:
+        TextureSystem () = delete;
+        ~TextureSystem();
+
+        static void init(std::vector<Entity> entities, void *args);
+        static GLuint get_texture_id();
+        static int get_tile_hor_count();
+        
+        static std::pair<glm::vec2, glm::vec2> texture_uvs[];
+
+    private:
+        //static variables only used once in init
+        static GLuint texture_id;
+        static const std::string path;
+        /* static std::unordered_map<std::string, std::pair<glm::vec2, glm::vec2>> texture_uv_map; */
+        static int tile_hor_count;
 };
 
 #endif 
