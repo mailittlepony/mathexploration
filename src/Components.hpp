@@ -15,6 +15,8 @@
 struct Transform
 {
     float x, y, z;
+    glm::vec3 scale;
+    glm::vec3 rotation;
 };
 
 struct Rigidbody
@@ -49,6 +51,11 @@ struct Camera
     glm::vec3 target;     
     glm::vec3 offset;    
     float smoothing_factor; 
+};
+
+struct Animation
+{
+
 };
 
 #endif 

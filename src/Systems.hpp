@@ -38,12 +38,16 @@ class TextureSystem
 
         static void init(std::vector<Entity> entities, void *args);
         static GLuint get_texture_id();
+        static int get_tile_size();
+        static int get_tile_hor_count();
 
     private:
         static GLuint texture_id;
         static const std::string path;
         /* static std::unordered_map<std::string, std::pair<glm::vec2, glm::vec2>> texture_uv_map; */
         static std::pair<glm::vec2, glm::vec2> texture_uvs[];
+        static int tile_size;
+        static int tile_hor_count;
 };
 
 
@@ -80,8 +84,19 @@ class CameraSystem {
 
     private:
         static void create_projection_matrix(float screen_width, float screen_height, glm::mat4& proj_matrix);
-        static void create_view_matrix(int tile_count_ver, glm::mat4& view_matrix, Transform* transform);
+        static void create_view_matrix(int screen_height, glm::mat4& view_matrix, Transform* transform);
 
+};
+
+class AnimateSystem
+{
+    public:
+        AnimateSystem() = delete;
+        ~AnimateSystem();
+
+        static void animate(std::vector<Entity> entities, void *args);
+
+    private:
 };
 
 #endif 

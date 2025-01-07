@@ -28,11 +28,6 @@ void CameraSystem::init(std::vector<Entity> entities, void* args) {
     create_projection_matrix(WIDTH, HEIGHT, projection);
     GLint projection_loc = glGetUniformLocation(shader_program, "projection");
     glUniformMatrix4fv(projection_loc, 1, GL_FALSE, &projection[0][0]);
-
-    glm::mat4 view;
-    create_view_matrix(10, view, transform);
-    GLint view_loc = glGetUniformLocation(shader_program, "view");
-    glUniformMatrix4fv(view_loc, 1, GL_FALSE, &view[0][0]);
 }
 
 void CameraSystem::update_camera(std::vector<Entity> entities, void* args) {
@@ -45,7 +40,7 @@ void CameraSystem::update_camera(std::vector<Entity> entities, void* args) {
     glUseProgram(shader_program);
 
     glm::mat4 view;
-    create_view_matrix(10, view, transform);
+    create_view_matrix(HEIGHT, view, transform);
     GLint view_loc = glGetUniformLocation(shader_program, "view");
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, &view[0][0]);
 }
@@ -62,14 +57,15 @@ void CameraSystem::create_projection_matrix(float screen_width, float screen_hei
     }
 }
 
-void CameraSystem::create_view_matrix(int tile_count_ver, glm::mat4& view_matrix, Transform* transform) {
+void CameraSystem::create_view_matrix(int screen_height, glm::mat4& view_matrix, Transform* transform) {
     view_matrix = glm::mat4(1.0f);
 
-    view_matrix[0][0] = 2.0f / tile_count_ver;
-    view_matrix[1][1] = 2.0f / tile_count_ver;
+    view_matrix[0][0] = 2.0f / screen_height;
+    view_matrix[1][1] = 2.0f / screen_height;
 
     glm::vec3 pos(-transform->x, -transform->y, -transform->z);
     view_matrix = glm::translate(view_matrix, pos);
 }
+
 
 

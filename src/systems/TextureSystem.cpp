@@ -9,11 +9,11 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#define TEXTURE_TILE_HOR_COUNT 16
-
 const std::string TextureSystem::path = "./src/render/textures/texture.png";
 GLuint TextureSystem::texture_id = 0;
 std::pair<glm::vec2, glm::vec2> TextureSystem::texture_uvs[80] = {  };
+int TextureSystem::tile_size = 64;
+int TextureSystem::tile_hor_count = 16;
 
 void TextureSystem::init(std::vector<Entity> entities, void *args)
 {
@@ -46,14 +46,14 @@ void TextureSystem::init(std::vector<Entity> entities, void *args)
 
     for (int i = 0; i < 80; ++i)
     {
-        int x = i % TEXTURE_TILE_HOR_COUNT;
-        int y = i / TEXTURE_TILE_HOR_COUNT;
+        int x = i % tile_hor_count;
+        int y = i / tile_hor_count;
 
-        float umin = (x / (float)TEXTURE_TILE_HOR_COUNT);
-        float umax = ((x + 1) / (float)TEXTURE_TILE_HOR_COUNT);
+        float umin = (x / (float)tile_hor_count);
+        float umax = ((x + 1) / (float)tile_hor_count);
 
-        float vmin = TEXTURE_TILE_HOR_COUNT - ((y + 1) / (float)TEXTURE_TILE_HOR_COUNT);
-        float vmax = TEXTURE_TILE_HOR_COUNT - (y / (float)TEXTURE_TILE_HOR_COUNT);
+        float vmin = tile_hor_count - ((y + 1) / (float)tile_hor_count);
+        float vmax = tile_hor_count - (y / (float)tile_hor_count);
 
         texture_uvs[i].first = glm::vec2(umin, vmin); 
         texture_uvs[i].second = glm::vec2(umax, vmax); 
@@ -78,3 +78,12 @@ GLuint TextureSystem::get_texture_id()
     return texture_id;
 }
 
+int TextureSystem::get_tile_size()
+{
+    return tile_size;
+}
+
+int TextureSystem::get_tile_hor_count()
+{
+    return tile_hor_count;
+}

@@ -16,7 +16,7 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
     for (Entity const &entity : entities)
     {
         Controller *controller = ECS::get_component<Controller>(entity);
-       // z,w,a,d  
+
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
         {
             controller->move_up = true;
