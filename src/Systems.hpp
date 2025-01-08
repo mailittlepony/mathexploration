@@ -14,6 +14,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <GLFW/glfw3.h>
 
 class MeshSystem
 {
@@ -27,6 +28,10 @@ class MeshSystem
         static void end(std::vector<Entity> entities, void *args);
 
     private:
+        static std::set<Entity> init_entities;
+        static int last_entity_count;
+
+        static void init_mesh(Mesh *mesh);
 };
 
 class PhysicSystem
@@ -40,7 +45,6 @@ class PhysicSystem
     private:
 };
 
-
 class ControllerSystem
 {
     public:
@@ -49,6 +53,8 @@ class ControllerSystem
 
         static void process_input(std::vector<Entity> entities, void *args);
 
+        static std::unordered_map<char, int> digit_to_texture;
+        static std::unordered_map<int, bool> keyState;
     private:
 };
 
@@ -85,9 +91,10 @@ class TextureSystem
         ~TextureSystem();
 
         static void init(std::vector<Entity> entities, void *args);
+        static void update(std::vector<Entity> entities, void *args);
         static GLuint get_texture_id();
         static int get_tile_hor_count();
-        
+
         static std::pair<glm::vec2, glm::vec2> texture_uvs[];
 
     private:
@@ -96,6 +103,18 @@ class TextureSystem
         static const std::string path;
         /* static std::unordered_map<std::string, std::pair<glm::vec2, glm::vec2>> texture_uv_map; */
         static int tile_hor_count;
+};
+
+class CollisionSystem 
+{
+    public:
+        CollisionSystem() = delete;
+        ~CollisionSystem();
+
+        static void update(std::vector<Entity> entities, void *args);
+        static bool checkCollision2D(Transform* t1, RectCollider *c1, Transform *t2, const RectCollider *c2);
+
+    private:
 };
 
 #endif 

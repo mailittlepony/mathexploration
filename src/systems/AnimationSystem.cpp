@@ -13,7 +13,6 @@ void AnimationSystem::animate(std::vector<Entity> entities, void *args)
     for (Entity const &entity : entities) 
     {
         Animation *animation = ECS::get_component<Animation>(entity);
-        Controller *controller = ECS::get_component<Controller>(entity);
 
         if (animation->mode == AnimationMode::None) 
         {
@@ -23,8 +22,10 @@ void AnimationSystem::animate(std::vector<Entity> entities, void *args)
         {
             update(animation, delta_time);
         } 
-        else if (animation->mode == AnimationMode::OnInput && controller) 
+        else if (animation->mode == AnimationMode::OnInput) 
         {
+            Controller *controller = ECS::get_component<Controller>(entity);
+
             if (controller->move_left) 
             {
                 animation->frames = {5, 6, 7, 8};

@@ -8,6 +8,8 @@
 #include "Systems.hpp"
 
 #include <glm/glm.hpp>
+#include <iostream>
+#include <set>
 
 struct Vertex
 {
@@ -20,30 +22,22 @@ const unsigned int indices[] = {
     1, 2, 3    
 };
 
+
+std::set<Entity> MeshSystem::init_entities = {  };
+int MeshSystem::last_entity_count = 0;
+
 void MeshSystem::init(std::vector<Entity> entities, void *args)
 {    
     for (Entity const &entity : entities)
     {
         Mesh *mesh = ECS::get_component<Mesh>(entity);
-        glGenVertexArrays(1, &mesh->VAO);
-        glGenBuffers(1, &mesh->VBO);
-        glGenBuffers(1, &mesh->EBO);
 
-        glBindVertexArray(mesh->VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
+        init_mesh(mesh);
 
-        glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
-        glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), NULL, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1); 
+        init_entities.emplace(entity);
     }
+
+    last_entity_count = init_entities.size();
 }
 
 void MeshSystem::upload(std::vector<Entity> entities, void *args)
@@ -54,6 +48,16 @@ void MeshSystem::upload(std::vector<Entity> entities, void *args)
         Transform* t = ECS::get_component<Transform>(entity);
         Texture *tex = ECS::get_component<Texture>(entity);
         Animation *animation = ECS::get_component<Animation>(entity);
+
+        if (entities.size() > last_entity_count)
+        {
+            if (init_entities.find(entity) == init_entities.end())
+            {
+                init_mesh(mesh);
+                init_entities.emplace(entity);
+                last_entity_count++;
+            }
+        }
 
         if (animation->mode == AnimationMode::Always || animation->mode == AnimationMode::OnInput)
         {
@@ -67,10 +71,10 @@ void MeshSystem::upload(std::vector<Entity> entities, void *args)
 
         Vertex vertices[4] = 
         {
-            { .position={ t->x + t->scale.x, t->y  + t->scale.y, 0 }, .uv=tex->uvmax },
-            { .position={ t->x + t->scale.x, t->y + 0, 0 }, .uv={ tex->uvmax.x, tex->uvmin.y } },
-            { .position={ t->x + 0, t->y + 0, 0 }, .uv=tex->uvmin },
-            { .position={ t->x + 0, t->y + t->scale.y, 0 }, .uv={ tex->uvmin.x, tex->uvmax.y } },
+            { .position={ t->x - 64/2.0 + t->scale.x, t->y - 64/2.0  + t->scale.y, 0 }, .uv=tex->uvmax },
+            { .position={ t->x - 64/2.0 + t->scale.x, t->y - 64/2.0 + 0, 0 }, .uv={ tex->uvmax.x, tex->uvmin.y } },
+            { .position={ t->x - 64/2.0 + 0, t->y - 64/2.0 + 0, 0 }, .uv=tex->uvmin },
+            { .position={ t->x - 64/2.0+ 0, t->y - 64/2.0 + t->scale.y, 0 }, .uv={ tex->uvmin.x, tex->uvmax.y } },
         };
 
         glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
@@ -103,3 +107,25 @@ void MeshSystem::end(std::vector<Entity> entities, void *args)
     }
 }
 
+
+void MeshSystem::init_mesh(Mesh *mesh)
+{
+    glGenVertexArrays(1, &mesh->VAO);
+    glGenBuffers(1, &mesh->VBO);
+    glGenBuffers(1, &mesh->EBO);
+
+    glBindVertexArray(mesh->VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mesh->VBO);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), NULL, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1); 
+}

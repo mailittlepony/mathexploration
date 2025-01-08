@@ -9,8 +9,11 @@
 
 #include <GL/glew.h>
 #include <sstream>
+#include <string>
+#include <vector>
 #include "glm/ext/vector_float2.hpp"
 #include "glm/vec3.hpp"
+#include "ECS.hpp"
 
 struct Transform
 {
@@ -42,7 +45,9 @@ struct Controller
 {
     float speed;
     bool move_up, move_down, move_left, move_right;
-    bool jump, grab, throwing;
+    bool grab;
+    std::string input;
+    int last_key_pressed;
 };
 
 struct Camera 
@@ -53,18 +58,33 @@ struct Camera
     float smoothing_factor; 
 };
 
-enum class AnimationMode {
+enum class AnimationMode 
+{
     None,           
     Always,         
     OnInput         
 };
 
-struct Animation {
+struct Animation 
+{
     int current_frame;          
     float frame_duration;       
     float elapsed_time;         
     std::vector<int> frames;    
     AnimationMode mode;         
+};
+
+struct RectCollider 
+{
+    float width, height; 
+    float xoffset, yoffset;
+    bool is_trigger;     
+    std::vector<Entity> entities;
+};
+
+struct Grabbable 
+{
+    bool is_grabbed = false; 
 };
 
 #endif 

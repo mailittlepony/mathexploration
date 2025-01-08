@@ -59,8 +59,10 @@ void TextureSystem::init(std::vector<Entity> entities, void *args)
         texture_uvs[i].first = glm::vec2(umin, vmin); 
         texture_uvs[i].second = glm::vec2(umax, vmax); 
     }
+}
 
-
+void TextureSystem::update(std::vector<Entity> entities, void *args)
+{
     for (Entity const &entity : entities)
     {
         Texture *texture = ECS::get_component<Texture>(entity);
