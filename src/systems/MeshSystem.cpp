@@ -51,7 +51,7 @@ void MeshSystem::upload(std::vector<Entity> entities, void *args)
 
         if (entities.size() > last_entity_count)
         {
-            if (init_entities.find(entity) == init_entities.end())
+            if ((init_entities.find(entity) == init_entities.end()) && tex->visible)
             {
                 init_mesh(mesh);
                 init_entities.emplace(entity);
@@ -90,9 +90,13 @@ void MeshSystem::draw(std::vector<Entity> entities, void *args)
     for (Entity const &entity : entities)
     {
         Mesh *mesh = ECS::get_component<Mesh>(entity);
+        Texture *tex = ECS::get_component<Texture>(entity);
 
-        glBindVertexArray(mesh->VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        if (tex && tex->visible)
+        {
+            glBindVertexArray(mesh->VAO);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
     }
 }
 

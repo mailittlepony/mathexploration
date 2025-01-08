@@ -39,15 +39,15 @@ struct Texture
     int id;
     glm::vec2 uvmin;
     glm::vec2 uvmax;
+    bool visible = true;
 };
 
 struct Controller
 {
-    float speed;
     bool move_up, move_down, move_left, move_right;
-    bool grab;
+    float speed = 200.0f;
     std::string input;
-    int last_key_pressed;
+    int bcount = 0;
 };
 
 struct Camera 
@@ -82,9 +82,9 @@ struct RectCollider
     std::vector<Entity> entities;
 };
 
-struct Grabbable 
+struct Player
 {
-    bool is_grabbed = false; 
+    bool grabbing = false;
 };
 
 #endif 

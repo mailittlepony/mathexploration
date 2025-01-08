@@ -18,27 +18,9 @@
 int main()
 {
     //initialize entitiesScene menu = ECS::create_scene();
-    /* Scene menu = ECS:: create_scene(); */
     Scene niv1 = ECS:: create_scene();
-    /* Scene niv2 = ECS::create_scene(); */
-    /* Scene niv3 = ECS::create_scene(); */
-    /* Scene niv4 = ECS::create_scene(); */
-    /* Scene pause = ECS::create_scene(); */
 
     ECS::select_scene(niv1);
-
-    /* Entity path1 = ECS::create_entity(); */
-    /* Entity path2 = ECS::create_entity(); */
-    /* Entity path3 = ECS::create_entity(); */
-    /* Entity path4 = ECS::create_entity(); */
-    /* Entity path5 = ECS::create_entity(); */
-    /* Entity path6 = ECS::create_entity(); */
-
-    /* Entity lev2 = ECS::create_entity(); */
-    /* Entity lev3 = ECS::create_entity(); */
-    /* Entity lev4 = ECS::create_entity(); */
-    /* Entity lev5 = ECS::create_entity(); */
-    /* Entity lev6 = ECS::create_entity(); */
 
     ECS::register_component<Transform>(); 
     ECS::register_component<Rigidbody>(); 
@@ -48,13 +30,17 @@ int main()
     ECS::register_component<Camera>();
     ECS::register_component<Animation>();
     ECS::register_component<RectCollider>();
+    ECS::register_component<Player>();
 
     std::string texture_path = "./src/render/textures/texture.jpg";
 
+
+    //PLAYER//
     Entity player = ECS::create_entity();
+    ECS::add_component<Player>(player);
     ECS::add_component<Transform>(player, { .x=-32, .y=-32, .z=0 , .scale = glm::vec3(100, 100, 0)});
     ECS::add_component<Rigidbody>(player, { .mass = 1.0f , .velocity = {0.0f, 0.0f, 0.0f}}); 
-    ECS::add_component<Controller>(player, { .speed = 200.0});
+    ECS::add_component<Controller>(player);
     ECS::add_component<Mesh>(player);
     ECS::add_component<Texture>(player, { .id=0 });
     ECS::add_component<Camera>(player, {
@@ -69,11 +55,10 @@ int main()
             .frames=std::vector<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 79, 80},
             .mode=AnimationMode::OnInput
             });
-    ECS::add_component(player, RectCollider{ .width=100, .height=100, .is_trigger=true });
+    ECS::add_component(player, RectCollider{ .width=50, .height=50, .is_trigger=true });
 
 
-
-
+    //FENCE//
     Entity fence = ECS::create_entity();
 
     ECS::add_component<Transform>(fence, { .x=-323, .y=-116, .z=0, .scale = glm::vec3(300, 300, 0) });
@@ -82,6 +67,7 @@ int main()
     ECS::add_component<Animation>(fence, {.mode=AnimationMode::None});
 
 
+    //QUESTION//
     Entity question = ECS::create_entity();
 
     ECS::add_component<Transform>(question, { .x=100, .y=80, .z=0, .scale = glm::vec3(100, 100, 0) });
@@ -90,6 +76,7 @@ int main()
     ECS::add_component<Animation>(question, {.mode=AnimationMode::None});
 
 
+    //QUESTION MARK//
     Entity question_mark = ECS::create_entity();
 
     ECS::add_component<Transform>(question_mark, { .x=170, .y=80, .z=0, .scale = glm::vec3(100, 100, 0) });
@@ -97,6 +84,8 @@ int main()
     ECS::add_component<Texture>(question_mark, { .id=36 });
     ECS::add_component<Animation>(question_mark, {.mode=AnimationMode::None});
 
+
+    //INPUT BOX//
     Entity input_box = ECS::create_entity();
 
     ECS::add_component<Transform>(input_box, { .x=-86, .y=-310, .z=0, .scale = glm::vec3(170, 170, 0) });
@@ -104,14 +93,16 @@ int main()
     ECS::add_component<Texture>(input_box, { .id=47 });
     ECS::add_component<Animation>(input_box, {.mode=AnimationMode::None});
 
+
+    //SHEEPS//
     Entity sheeps[13] = {};
     for (int i=0; i<7; i++)
     {
-        int first = (std::rand() % 2 == 0) ? 33 : 82;
+        int first = (std::rand() % 2 == 0) ? 33 : 81;
         int second = 0;
         if (first==33)
         {
-            second = 82;
+            second = 81;
         }
         else
         {
@@ -125,8 +116,7 @@ int main()
                 .frame_duration=0.2, 
                 .frames=std::vector<int> {first, second},
                 .mode=AnimationMode::Always});
-        ECS::add_component(sheeps[i], RectCollider{ .width=100.0f, .height=100.0f });
-        ECS::add_component(sheeps[i], Grabbable{});
+        ECS::add_component(sheeps[i], RectCollider{ .width=50.0f, .height=50.0f });
 
     }
 
@@ -150,8 +140,7 @@ int main()
                 .frame_duration=0.2, 
                 .frames=std::vector<int> {first, second},
                 .mode=AnimationMode::Always});
-        ECS::add_component(sheeps[i], RectCollider{ .width=100.0f, .height=100.0f });
-        ECS::add_component(sheeps[i], Grabbable{});
+        ECS::add_component(sheeps[i], RectCollider{ .width=50.0f, .height=50.0f });
     }
 
     std::srand(std::time(0));
@@ -163,21 +152,13 @@ int main()
 
         ECS::add_component<Transform>(sheeps[i], { .x = x, .y = y, .z = 0, .scale = glm::vec3(100, 100, 0) });
     }
+    
 
-    /*     ECS::add_component<Transform>(path1, { .x=0, .y=0, .z=0, .scale = glm::vec3(100, 100, 0) }); */
-    /*     ECS::add_component<Mesh>(path1); */
-    /*     ECS::add_component<Texture>(path1, { .id=18 }); */
-    /*     ECS::add_component<Animation>(path1, {.mode=AnimationMode::None}); */
-
-    /*     ECS::add_component<Transform>(path2, { .x=0, .y=0, .z=0, .scale = glm::vec3(100, 100, 0) }); */
-    /*     ECS::add_component<Mesh>(path2); */
-    /*     ECS::add_component<Texture>(path2, { .id=18 }); */
-    /*     ECS::add_component<Animation>(path2, {.mode=AnimationMode::None}); */
-
+    //SYSTEMS//
     ComponentMask signature = ECS::create_signature<Mesh>();
     ECS::register_system(MeshSystem::init, signature, nullptr);
 
-    signature = ECS::create_signature<Mesh>();
+    signature = ECS::create_signature<Mesh, Texture>();
     ECS::register_system(MeshSystem::draw, signature, nullptr);
 
     signature = ECS::create_signature<Mesh, Transform, Texture, Animation>();
@@ -200,11 +181,14 @@ int main()
     signature = ECS::create_signature<RectCollider, Transform>();
     ECS::register_system(CollisionSystem::update, signature, nullptr);
 
+    signature = ECS::create_signature<Player, RectCollider, Transform>();
+    ECS::register_system(PlayerSystem::update, signature, nullptr);
+
+
     //initialize window
-    Renderer::init();
+    Renderer::init();  
 
-    signature = ECS::create_signature<Controller>();
-
+    signature = ECS::create_signature<Controller, Player>();
     ECS::register_system(ControllerSystem::process_input, signature, Renderer::window);
 
     //load textures and mesh
@@ -213,6 +197,7 @@ int main()
     ECS::call_system(CameraSystem::init);
 
     float previous_time = glfwGetTime();
+
     //game loop
     while(!glfwWindowShouldClose(Renderer::window))
     {
@@ -222,6 +207,7 @@ int main()
 
         Renderer::processInput(Renderer::window);
         ECS::call_system(ControllerSystem::process_input);
+        ECS::call_system(PlayerSystem::update);
 
         glClearColor(1., 1., 1., 1.);
         glClear(GL_COLOR_BUFFER_BIT);  

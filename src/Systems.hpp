@@ -55,6 +55,7 @@ class ControllerSystem
 
         static std::unordered_map<char, int> digit_to_texture;
         static std::unordered_map<int, bool> keyState;
+        static std::vector<Entity> displayed_entities; 
     private:
 };
 
@@ -116,6 +117,18 @@ class CollisionSystem
 
     private:
 };
+
+class PlayerSystem 
+{
+    public:
+        PlayerSystem() = delete;
+        ~PlayerSystem();
+
+        static void update(std::vector<Entity> entities, void *args);
+
+    private:
+};
+
 
 #endif 
 

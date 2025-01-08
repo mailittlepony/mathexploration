@@ -9,6 +9,7 @@
 
 #include <GLFW/glfw3.h>
 
+std::vector<Entity> ControllerSystem::displayed_entities; 
 std::unordered_map<int, bool> ControllerSystem::keyState;
 std::unordered_map<char, int> ControllerSystem::digit_to_texture = {
     {'0', 62}, 
@@ -25,6 +26,14 @@ std::unordered_map<char, int> ControllerSystem::digit_to_texture = {
 
 void updateInputDisplay(const std::string& playerInput) 
 {
+    for (Entity &entity : ControllerSystem::displayed_entities) 
+    {
+        Texture *tex = ECS::get_component<Texture>(entity);
+        if (tex) 
+        {
+            tex->visible = false;  
+        }
+    }
 
     for (size_t i = 0; i < playerInput.size(); ++i) 
     {
@@ -36,16 +45,19 @@ void updateInputDisplay(const std::string& playerInput)
 
             Entity characterEntity = ECS::create_entity();
             ECS::add_component<Transform>(characterEntity, { 
-                    .x = -86.0f + static_cast<float>(i * 20),
-                    .y = -310, .z = -0.9,
-                    .scale = glm::vec3(20, 20, 0)
+                    .x = -76.0f + static_cast<float>(i * 20),
+                    .y = -230, .z = -0.9,
+                    .scale = glm::vec3(40, 40, 0)
                     });
-            ECS::add_component<Animation>(characterEntity, { .mode=AnimationMode::None });
+            ECS::add_component<Animation>(characterEntity, { .mode = AnimationMode::None });
             ECS::add_component<Mesh>(characterEntity);
-            ECS::add_component<Texture>(characterEntity, { .id = textureId });
+            ECS::add_component<Texture>(characterEntity, { .id = textureId, .visible = true });
+
+            ControllerSystem::displayed_entities.push_back(characterEntity);
         }
     }
 }
+
 
 void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
 {
@@ -53,6 +65,7 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
     for (Entity const &entity : entities)
     {
         Controller *controller = ECS::get_component<Controller>(entity);
+        Player *player = ECS::get_component<Player>(entity);
 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
         {
@@ -92,20 +105,11 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
 
         if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
         {
-            controller->grab = true;
-            
-            RectCollider *pcol = ECS::get_component<RectCollider>(entity);
-            Transform *pt = ECS::get_component<Transform>(entity);
-            if (pcol->entities.size() > 0)
-            {
-                Transform *sheep_t = ECS::get_component<Transform>(pcol->entities[0]);
-                sheep_t->x = pt->x;
-                sheep_t->y = pt->y;
-            }
+            player->grabbing = true;
         }
         else
         {
-            controller->grab = false;
+            player->grabbing = false;
         }
 
         //Digit input
@@ -134,8 +138,12 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args)
                 keyState[GLFW_KEY_BACKSPACE] = true;
                 if (!controller->input.empty()) 
                 {
+                    Texture *tex = ECS::get_component<Texture>(displayed_entities.back());
+                    if (tex) {
+                        tex->visible = false;
+                    }
                     controller->input.pop_back();
-                    updateInputDisplay(controller->input);
+                    displayed_entities.pop_back();
                 }
             }
         } 
