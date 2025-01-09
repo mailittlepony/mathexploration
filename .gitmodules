@@ -7,3 +7,5 @@
 [submodule "libs/SimpleECS"]
 	path = libs/SimpleECS
 	url = https://github.com/MailiTruong/SimpleECS.git
+[submodule "https://github.com/MailiTruong/SimpleECS"]
+	git = https://github.com/MailiTruong/SimpleECS.git
