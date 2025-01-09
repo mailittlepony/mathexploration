@@ -50,7 +50,7 @@ Before you can run MathExploration, ensure you have the following installed on y
 
 3. Run the game:
    ```bash
-   ./bin/MathExploration
+   ./bin/math_exploration
    ```
 
 ### Controls
@@ -77,7 +77,7 @@ The game's visuals are crafted to represent mathematical beauty:
 - [ ] Create a level editor for user-generated content
 
 ## License
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Apache-2.0](LICENSE).
 
 ---
 
