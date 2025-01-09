@@ -27,7 +27,7 @@ int main()
     Renderer::init();
 
     //Setup the initial scene
-    SceneManager::setup_scene(current_scene);
+    SceneManager::setup_menu_scene(current_scene);
     SceneManager::register_and_initialize_systems(delta_time);
 
     float previous_time = glfwGetTime();
@@ -39,24 +39,32 @@ int main()
         delta_time = current_time - previous_time;
         previous_time = current_time;
 
-        Renderer::processInput(Renderer::window);
-        ECS::call_system(ControllerSystem::process_input);
-
-        /* if (SceneManager::is_loose) */
-        /* { */
-        /*     SceneManager::restart_game(current_scene, delta_time); */
-        /* } */
-
-        if (SceneManager::is_win)
+        if (SceneManager::is_loose)
         {
-            SceneManager::change_scene(current_scene, delta_time, SceneManager::setup_end_scene, SceneManager::register_end);
+            SceneManager::change_scene(current_scene, delta_time, SceneManager::setup_loose_scene, SceneManager::register_end);
         }
 
-        if (SceneManager::has_restarted)
+        else if (SceneManager::is_win)
+        {
+            SceneManager::change_scene(current_scene, delta_time, SceneManager::setup_win_scene, SceneManager::register_end);
+        }
+
+        else if (SceneManager::has_restarted)
         {
             SceneManager::change_scene(current_scene, delta_time, SceneManager::setup_scene, SceneManager::register_and_initialize_systems);
         }
 
+        else if (SceneManager::chose_menu)
+        {
+            SceneManager::change_scene(current_scene, delta_time, SceneManager::setup_menu_scene, SceneManager::register_and_initialize_systems);
+        }
+        else if (SceneManager::is_select)
+        {
+            SceneManager::change_scene(current_scene, delta_time, SceneManager::setup_scene, SceneManager::register_and_initialize_systems);
+        }
+
+        Renderer::processInput(Renderer::window);
+        ECS::call_system(ControllerSystem::process_input);
         ECS::call_system(PlayerSystem::update);
 
         glClearColor(1., 1., 1., 1.);

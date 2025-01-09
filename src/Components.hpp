@@ -84,9 +84,9 @@ struct RectCollider
 struct Player
 {
     bool grabbing = false;
-    bool game_over = false;     
+    bool game_over = true;     
     bool input_correct = false;
-    bool restart = false;
+    bool in_menu = false;
 
 };
 

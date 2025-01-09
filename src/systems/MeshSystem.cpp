@@ -28,6 +28,9 @@ int MeshSystem::last_entity_count = 0;
 
 void MeshSystem::init(std::vector<Entity> entities, void *args[])
 {    
+    MeshSystem::init_entities.clear();
+    MeshSystem::last_entity_count = 0;
+
     for (Entity const &entity : entities)
     {
         Mesh *mesh = ECS::get_component<Mesh>(entity);
@@ -101,7 +104,7 @@ void MeshSystem::draw(std::vector<Entity> entities, void *args[])
 }
 
 void MeshSystem::end(std::vector<Entity> entities, void *args[])
-{    
+{
     for (Entity const &entity : entities)
     {
         Mesh *mesh = ECS::get_component<Mesh>(entity);

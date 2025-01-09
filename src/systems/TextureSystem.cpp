@@ -72,6 +72,7 @@ void TextureSystem::update(std::vector<Entity> entities, void *args[])
     }
 }
 
+
 TextureSystem::~TextureSystem()
 {
 }

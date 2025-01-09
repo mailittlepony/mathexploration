@@ -29,12 +29,10 @@ void updateInputDisplay(const std::string& playerInput)
 {
     for (Entity &entity : ControllerSystem::displayed_entities) 
     {
-        std::cout << "entity in displayed_entities: " << entity << std::endl;
         Texture *tex = ECS::get_component<Texture>(entity);
         if (tex) 
         {
             tex->visible = false;  
-            std::cout << "Hiding entity : " << entity << std::endl;
         }
     }
 
@@ -69,17 +67,27 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args[])
     bool *is_win = static_cast<bool *>(args[2]);
     bool *is_loose = static_cast<bool *>(args[3]);
     bool *end_scene = static_cast<bool *>(args[4]);
+    bool *chose_menu = static_cast<bool *>(args[5]);
+    bool *is_select = static_cast<bool *>(args[6]);
 
     for (Entity const &entity : entities)
     {
         Controller *controller = ECS::get_component<Controller>(entity);
         Player *player = ECS::get_component<Player>(entity);
 
-        if ((player->game_over || end_scene) && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && player->game_over && *has_restarted==false)
         {
             ControllerSystem::displayed_entities.clear();
 
             *has_restarted = true;
+            return;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && player->game_over && *chose_menu==false)
+        {
+            ControllerSystem::displayed_entities.clear();
+
+            *chose_menu = true;
             return;
         }
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
@@ -121,13 +129,19 @@ void ControllerSystem::process_input(std::vector<Entity> entities, void *args[])
         if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
         {
             player->grabbing = true;
+            if (end_scene && player->in_menu)
+            {
+                player->in_menu = false;
+                *is_select = true;
+                player->game_over = true;
+            }
         }
         else
         {
             player->grabbing = false;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && !*end_scene && !player->game_over)
         {
             if (controller->input == "13")
             {

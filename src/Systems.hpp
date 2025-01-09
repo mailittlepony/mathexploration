@@ -56,6 +56,7 @@ class ControllerSystem
         static std::unordered_map<char, int> digit_to_texture;
         static std::unordered_map<int, bool> keyState;
         static std::vector<Entity> displayed_entities; 
+        static bool key_pressed;
     private:
 };
 
