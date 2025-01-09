@@ -22,10 +22,10 @@ class MeshSystem
         MeshSystem() = delete;
         ~MeshSystem();
 
-        static void upload(std::vector<Entity> entities, void *args);
-        static void draw(std::vector<Entity> entities, void *args);
-        static void init(std::vector<Entity> entities, void *args);
-        static void end(std::vector<Entity> entities, void *args);
+        static void upload(std::vector<Entity> entities, void *args[]);
+        static void draw(std::vector<Entity> entities, void *args[]);
+        static void init(std::vector<Entity> entities, void *args[]);
+        static void end(std::vector<Entity> entities, void *args[]);
 
     private:
         static std::set<Entity> init_entities;
@@ -40,7 +40,7 @@ class PhysicSystem
         PhysicSystem() = delete;
         ~PhysicSystem();
 
-        static void update(std::vector<Entity> entities, void *args);
+        static void update(std::vector<Entity> entities, void *args[]);
 
     private:
 };
@@ -51,7 +51,7 @@ class ControllerSystem
         ControllerSystem() = delete;
         ~ControllerSystem();
 
-        static void process_input(std::vector<Entity> entities, void *args);
+        static void process_input(std::vector<Entity> entities, void *args[]);
 
         static std::unordered_map<char, int> digit_to_texture;
         static std::unordered_map<int, bool> keyState;
@@ -64,8 +64,8 @@ class CameraSystem {
         CameraSystem() = delete;
         ~CameraSystem();
 
-        static void init(std::vector<Entity> entities, void* args);
-        static void update(std::vector<Entity> entities, void* args);
+        static void init(std::vector<Entity> entities, void *args[]);
+        static void update(std::vector<Entity> entities, void *args[]);
 
     private:
         static void create_projection_matrix(float screen_width, float screen_height, glm::mat4& proj_matrix);
@@ -79,7 +79,7 @@ class AnimationSystem
         AnimationSystem() = delete;
         ~AnimationSystem();
 
-        static void animate(std::vector<Entity> entities, void *args);
+        static void animate(std::vector<Entity> entities, void *args[]);
 
     private:
         static void update(Animation *animation, float delta_time);
@@ -91,8 +91,8 @@ class TextureSystem
         TextureSystem () = delete;
         ~TextureSystem();
 
-        static void init(std::vector<Entity> entities, void *args);
-        static void update(std::vector<Entity> entities, void *args);
+        static void init(std::vector<Entity> entities, void *args[]);
+        static void update(std::vector<Entity> entities, void *args[]);
         static GLuint get_texture_id();
         static int get_tile_hor_count();
 
@@ -112,7 +112,7 @@ class CollisionSystem
         CollisionSystem() = delete;
         ~CollisionSystem();
 
-        static void update(std::vector<Entity> entities, void *args);
+        static void update(std::vector<Entity> entities, void *args[]);
         static bool checkCollision2D(Transform* t1, RectCollider *c1, Transform *t2, const RectCollider *c2);
 
     private:
@@ -124,7 +124,7 @@ class PlayerSystem
         PlayerSystem() = delete;
         ~PlayerSystem();
 
-        static void update(std::vector<Entity> entities, void *args);
+        static void update(std::vector<Entity> entities, void *args[]);
 
     private:
 };

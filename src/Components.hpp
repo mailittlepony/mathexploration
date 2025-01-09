@@ -46,8 +46,7 @@ struct Controller
 {
     bool move_up, move_down, move_left, move_right;
     float speed = 200.0f;
-    std::string input;
-    int bcount = 0;
+    std::string input = "";
 };
 
 struct Camera 
@@ -85,6 +84,10 @@ struct RectCollider
 struct Player
 {
     bool grabbing = false;
+    bool game_over = false;     
+    bool input_correct = false;
+    bool restart = false;
+
 };
 
 #endif 

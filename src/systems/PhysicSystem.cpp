@@ -13,16 +13,16 @@
 #include "glm/vec3.hpp"
 #include "glm/geometric.hpp"
 
-void PhysicSystem::update(std::vector<Entity> entities, void *args)
+void PhysicSystem::update(std::vector<Entity> entities, void *args[])
 {
-    float delta_time = *static_cast<float*>(args); 
+    float delta_time = *static_cast<float *>(args[0]); 
     for (Entity const &entity : entities)
     {
         Transform *transform = ECS::get_component<Transform>(entity);
         Rigidbody *rigidbody = ECS::get_component<Rigidbody>(entity);
         Controller *controller = ECS::get_component<Controller>(entity);
 
-        if (transform && rigidbody)
+    if (transform && rigidbody)
         {
             if (controller)
             {

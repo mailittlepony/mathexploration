@@ -16,7 +16,7 @@ GLuint TextureSystem::texture_id = 0;
 std::pair<glm::vec2, glm::vec2> TextureSystem::texture_uvs[TILE_NB] = {  };
 int TextureSystem::tile_hor_count = 16;
 
-void TextureSystem::init(std::vector<Entity> entities, void *args)
+void TextureSystem::init(std::vector<Entity> entities, void *args[])
 {
     glGenTextures(1, &texture_id);
     glBindTexture(GL_TEXTURE_2D, texture_id);
@@ -61,7 +61,7 @@ void TextureSystem::init(std::vector<Entity> entities, void *args)
     }
 }
 
-void TextureSystem::update(std::vector<Entity> entities, void *args)
+void TextureSystem::update(std::vector<Entity> entities, void *args[])
 {
     for (Entity const &entity : entities)
     {

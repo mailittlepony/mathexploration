@@ -35,7 +35,7 @@ bool CollisionSystem::checkCollision2D(Transform* t1, RectCollider *c1, Transfor
     return overlapX && overlapY;
 }
 
-void CollisionSystem::update(std::vector<Entity> entities, void *args)
+void CollisionSystem::update(std::vector<Entity> entities, void *args[])
 {
     for (size_t i = 0; i < entities.size(); ++i) 
     {

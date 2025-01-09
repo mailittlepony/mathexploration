@@ -6,9 +6,9 @@
 
 #include "Systems.hpp"
 
-void AnimationSystem::animate(std::vector<Entity> entities, void *args) 
+void AnimationSystem::animate(std::vector<Entity> entities, void *args[]) 
 {
-    float delta_time = *static_cast<float*>(args);
+    float delta_time = *static_cast<float *>(args[0]);
 
     for (Entity const &entity : entities) 
     {

@@ -13,7 +13,8 @@
 #include "glm/vec3.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-void CameraSystem::init(std::vector<Entity> entities, void* args) {
+void CameraSystem::init(std::vector<Entity> entities, void *args[]) 
+{
     if (entities.empty()) return;
 
     Camera* camera = ECS::get_component<Camera>(entities[0]);
@@ -30,7 +31,8 @@ void CameraSystem::init(std::vector<Entity> entities, void* args) {
     glUniformMatrix4fv(projection_loc, 1, GL_FALSE, &projection[0][0]);
 }
 
-void CameraSystem::update(std::vector<Entity> entities, void* args) {
+void CameraSystem::update(std::vector<Entity> entities, void *args[])
+{
     if (entities.empty()) return;
 
     Transform* transform = ECS::get_component<Transform>(entities[0]);
@@ -45,7 +47,8 @@ void CameraSystem::update(std::vector<Entity> entities, void* args) {
     glUniformMatrix4fv(view_loc, 1, GL_FALSE, &view[0][0]);
 }
 
-void CameraSystem::create_projection_matrix(float screen_width, float screen_height, glm::mat4& proj_matrix) {
+void CameraSystem::create_projection_matrix(float screen_width, float screen_height, glm::mat4& proj_matrix)
+{
     proj_matrix = glm::mat4(1.0f);
 
     float aspect_ratio = screen_width / screen_height;
@@ -57,7 +60,8 @@ void CameraSystem::create_projection_matrix(float screen_width, float screen_hei
     }
 }
 
-void CameraSystem::create_view_matrix(int screen_height, glm::mat4& view_matrix, Transform* transform) {
+void CameraSystem::create_view_matrix(int screen_height, glm::mat4& view_matrix, Transform* transform) 
+{
     view_matrix = glm::mat4(1.0f);
 
     view_matrix[0][0] = 2.0f / screen_height;

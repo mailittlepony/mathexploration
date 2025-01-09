@@ -26,7 +26,7 @@ const unsigned int indices[] = {
 std::set<Entity> MeshSystem::init_entities = {  };
 int MeshSystem::last_entity_count = 0;
 
-void MeshSystem::init(std::vector<Entity> entities, void *args)
+void MeshSystem::init(std::vector<Entity> entities, void *args[])
 {    
     for (Entity const &entity : entities)
     {
@@ -40,7 +40,7 @@ void MeshSystem::init(std::vector<Entity> entities, void *args)
     last_entity_count = init_entities.size();
 }
 
-void MeshSystem::upload(std::vector<Entity> entities, void *args)
+void MeshSystem::upload(std::vector<Entity> entities, void *args[])
 {
     for (Entity const &entity : entities)
     {
@@ -85,7 +85,7 @@ void MeshSystem::upload(std::vector<Entity> entities, void *args)
     }
 }
 
-void MeshSystem::draw(std::vector<Entity> entities, void *args)
+void MeshSystem::draw(std::vector<Entity> entities, void *args[])
 {
     for (Entity const &entity : entities)
     {
@@ -100,7 +100,7 @@ void MeshSystem::draw(std::vector<Entity> entities, void *args)
     }
 }
 
-void MeshSystem::end(std::vector<Entity> entities, void *args)
+void MeshSystem::end(std::vector<Entity> entities, void *args[])
 {    
     for (Entity const &entity : entities)
     {

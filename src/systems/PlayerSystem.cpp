@@ -6,9 +6,9 @@
 
 #include "Systems.hpp"
 
-void PlayerSystem::update(std::vector<Entity> entities, void *args)
+void PlayerSystem::update(std::vector<Entity> entities, void *args[])
 {
-       for (Entity const &entity : entities)
+    for (Entity const &entity : entities)
     {
         Player *player = ECS::get_component<Player>(entity);
         RectCollider *pcol = ECS::get_component<RectCollider>(entity);
@@ -22,3 +22,5 @@ void PlayerSystem::update(std::vector<Entity> entities, void *args)
         }
     }
 }
+
+
