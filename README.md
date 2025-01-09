@@ -7,7 +7,7 @@ MathExploration is an immersive and educational C++ game built using OpenGL (GLE
 ## Features
 
 ### 🌌 **Mathematical Themes**
-Each level introduces a unique mathematical concept, including but not limited to:
+Each level introduces a unique mathematical concept, to learn maths the intuitive way, including but not limited to:
 - Arithmetics
 - Algebra *(soon)*
 - Geometry *(soon)*
@@ -53,12 +53,13 @@ Before you can run MathExploration, ensure you have the following installed on y
    ./bin/math_exploration
    ```
 
-### Controls
+### Controls (I haven't displayed the rules in the game for the moment)
 - **WASD**: Move character
 - **Enter**: Send your anwser
 - **Space**: Restart
-- **G**: Interact with objects
+- **G**: Interact with objects (grab objects or select level (for the moment every level goes to level 1))
 - **Esc**: Quit the game
+-  **R**: Go to menu
 
 ## Game Structure
 
