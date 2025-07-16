@@ -4,6 +4,6 @@
 [submodule "libs/stb"]
 	path = libs/stb
 	url = https://github.com/nothings/stb.git
-[submodule "libs/SimpleECS"]
-	path = libs/SimpleECS
-	url = https://github.com/MailiTruong/SimpleECS.git
+[submodule "simpleECS"]
+	path = simpleECS
+	url = https://github.com/mailittlepony/simpleECS.git
