@@ -19,7 +19,7 @@ LIBS_DIR=libs
 INCLUDE_DIR=include \
 			$(LIBS_DIR)/glfw/include \
 			$(LIBS_DIR)/glew/include \
-			$(LIBS_DIR)/SimpleECS/include \
+			$(LIBS_DIR)/simpleECS/include \
 			$(LIBS_DIR)/glm \
 			$(LIBS_DIR)/stb \
 			$(SRC_DIR)  
@@ -34,7 +34,7 @@ CFLAGS=-g -Wall -std=c++17
 LDFLAGS= 
 LDLIBS= -framework OpenGL -framework Cocoa -framework IOKit \
 			  $(LIBS_DIR)/glew/lib/libGLEW.a \
-			  $(LIBS_DIR)/SimpleECS/build/lib/libECSCPP.a \
+			  $(LIBS_DIR)/simpleECS/build/lib/libECSCPP.a \
 			  $(LIBS_DIR)/glfw/lib-universal/libglfw3.a
 
 

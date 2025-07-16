@@ -39,8 +39,8 @@ Before you can run MathExploration, ensure you have the following installed on y
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MailiTruong/MathExploration.git
-   cd MathExploration
+   git clone https://github.com/mailittlepony/mathexploration.git
+   cd mathexploration
    ```
 
 2. Build the game using Make:
